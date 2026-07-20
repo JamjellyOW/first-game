@@ -874,7 +874,7 @@ tile_map_data = PackedByteArray("AAABAAMAAAAAAAAAAAACAAMAAAAAAAAAAAAAAAUAAAAAAAA
 tile_set = SubResource("TileSet_3dryh")
 
 [node name="Player" parent="." instance=ExtResource("1_ebmjs")]
-position = Vector2(680, -1147)
+position = Vector2(-57, -1220)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -6)

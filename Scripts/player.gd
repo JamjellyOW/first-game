@@ -7,12 +7,13 @@ const JUMP_VELOCITY = -300.0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var floor_ray_cast: RayCast2D = $floorRayCast
 
-#for faster acceleration increase val
-@export var accelerationVal = 0.01
-# for longer sliding time reduce value
-@export var slideValue = 0.01
-@export var fullStopValue = 15
+@export var ice_acceleration: float = 200.0
+@export var ice_friction: float = 60.0
 
+@export var ice_memory_time: float = 0.25 # Time in seconds to retain ice physics off ledges
+var ice_timer: float = 0.0                # Counts down after leaving ice
+
+var was_on_ice: bool = false
 
 func _physics_process(delta: float) -> void:
 	
@@ -45,28 +46,35 @@ func _physics_process(delta: float) -> void:
 		animated_sprite.play("jump")
 	
 	#on ice
-	if _is_on_ice():
-		_movement_on_ice(direction)
+	# Check if standing on ice and refresh timer
+	if is_on_floor() and _is_on_ice():
+		ice_timer = ice_memory_time
+	else:
+		# Count down timer when off ice or in air
+		ice_timer = max(0.0, ice_timer - delta)
+	
+	# If the ice timer is active, maintain ice physics
+	if ice_timer > 0.0:
+		_movement_on_ice(direction, delta)
 	else:
 		_normal_movement(direction)
 	
 	move_and_slide()
 
-func _movement_on_ice(direction):
-	if direction:
-		velocity.x = lerp(velocity.x, direction * SPEED, accelerationVal)
-	else:
-		velocity.x = lerp(velocity.x, 0.0, slideValue)
-		
-		if velocity.x < fullStopValue and velocity.x > -fullStopValue:
-			velocity.x = 0
+func _movement_on_ice(direction: float, delta: float) -> void:
+		if direction != 0:
+			velocity.x = move_toward(velocity.x, direction * SPEED, ice_acceleration * delta)
+		else:
+			velocity.x = move_toward(velocity.x, 0.0, ice_friction * delta)
 		
 
 func _normal_movement(direction):
-	if direction:
+	if direction != 0:
 		velocity.x = direction * SPEED
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		# Only quickly decelerate if we are actually grounded
+		if is_on_floor():
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 
 func _is_on_ice() -> bool:
 	if not floor_ray_cast.is_colliding():
