@@ -1,11 +1,15 @@
 extends CanvasLayer
 
+var can_pause: bool = true
+
 func _ready() -> void:
 	visible = false
 	get_tree().paused = false
 
 
 func _input(event: InputEvent) -> void:
+		if not can_pause: return #Prevents pause if pause disabled
+		
 		if Input.is_action_just_pressed("pause"):
 			if get_tree().paused:
 				visible = false

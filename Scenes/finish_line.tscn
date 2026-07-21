@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://qya2tkl63h02"]
+
+[ext_resource type="Script" uid="uid://bpfmj0mx6c5cf" path="res://Scripts/finish_line.gd" id="1_fpin6"]
+[ext_resource type="PackedScene" uid="uid://cefqvi513hwws" path="res://Scenes/finish_screen.tscn" id="2_svule"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g36v6"]
+size = Vector2(5, 117.5)
+
+[node name="FinishLine" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_fpin6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -53)
+shape = SubResource("RectangleShape2D_g36v6")
+
+[node name="FinishScreen" parent="." instance=ExtResource("2_svule")]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

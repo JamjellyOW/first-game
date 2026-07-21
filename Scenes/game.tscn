@@ -817,22 +817,17 @@ _data = {
 
 [node name="Game" type="Node2D"]
 
-[node name="PauseMenu" parent="." instance=ExtResource("1_ldgsr")]
+[node name="Menus" type="Node" parent="."]
+
+[node name="PauseMenu" parent="Menus" instance=ExtResource("1_ldgsr")]
+unique_name_in_owner = true
 layer = 2
 
-[node name="GameManager" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("1_v158k")
-
-[node name="CheckpointManager" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("11_o5yvi")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="Menus"]
 unique_name_in_owner = true
 script = ExtResource("2_h4fw4")
 
-[node name="ScoreLabel" type="Label" parent="CanvasLayer"]
+[node name="ScoreLabel" type="Label" parent="Menus/CanvasLayer"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -849,7 +844,7 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TimerLabel" type="Label" parent="CanvasLayer"]
+[node name="TimerLabel" type="Label" parent="Menus/CanvasLayer"]
 offset_left = 10.0
 offset_top = 4.0
 offset_right = 118.0
@@ -859,6 +854,14 @@ theme_override_fonts/font = ExtResource("7_1l0tm")
 theme_override_font_sizes/font_size = 32
 text = "0"
 vertical_alignment = 1
+
+[node name="GameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_v158k")
+
+[node name="CheckpointManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("11_o5yvi")
 
 [node name="TileLayers" type="Node" parent="."]
 
